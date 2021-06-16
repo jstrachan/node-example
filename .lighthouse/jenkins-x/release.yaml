@@ -51,7 +51,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
-            jx updatebot argo --target-git-url https://github.com/cb-kubecd/argo-staging
+            jx updatebot argo --target-git-url https://github.com/cb-kubecd/argo-staging --version v${VERSION}
           resources: {}
         volumes:
         - name: npmrc
