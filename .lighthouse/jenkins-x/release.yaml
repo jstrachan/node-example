@@ -46,6 +46,13 @@ spec:
           resources: {}
         - name: promote-jx-promote
           resources: {}
+        - name: argo-promote
+          image: ghcr.io/jenkins-x/jx-updatebot:0.0.77
+          script: |
+            #!/usr/bin/env sh
+            source .jx/variables.sh
+            jx updatebot argo --version $VERSION --target-git-url https://github.com/cb-kubecd/argo-staging
+          resources: {}
         volumes:
         - name: npmrc
           secret:
