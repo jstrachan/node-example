@@ -36,5 +36,5 @@ spec:
   tls:
   - hosts:
     - {{ .Values.service.name }}{{ .Values.jxRequirements.ingress.namespaceSubDomain }}{{ .Values.jxRequirements.ingress.domain }}
-    secretName: "jx/tls-{{ .Values.jxRequirements.ingress.domain | replace "." "-" }}-p"
+      secretName: "jx/tls-{{ .Values.jxRequirements.ingress.domain | replace "." "-" }}-p"
 {{- end }}
