@@ -15,13 +15,19 @@ metadata:
 {{ toYaml $annotations | indent 4 }}
 {{- end }}
   name: {{ .Values.service.name }}
+{{- if .Values.ingress.labels }}
+{{ toYaml .Values.ingress.labels | indent 4 }}
+{{- end }}
 spec:
   rules:
   - http:
       paths:
-      - backend:
-          serviceName: {{ .Values.service.name }}
-          servicePort: 80
+      - pathType: {{ .Values.ingress.pathType | default "ImplementationSpecific" }}
+        backend:
+          service:
+            name: {{ .Values.service.name }}
+            port:
+              number: {{ .Values.service.externalPort }}
 {{- if eq "NodePort" .Values.jxRequirements.ingress.serviceType }}
         path: "/{{ .Release.Namespace }}/hook"
 {{- else if .Values.jxRequirements.ingress.domain }}
@@ -31,12 +37,6 @@ spec:
   tls:
   - hosts:
     - {{ .Values.service.name }}{{ .Values.jxRequirements.ingress.namespaceSubDomain }}{{ .Values.jxRequirements.ingress.domain }}
-{{- if and (hasKey .Values.jxRequirements.ingress.tls "secretName") (.Values.jxRequirements.ingress.tls.secretName) }}
-    secretName: "{{ .Values.jxRequirements.ingress.tls.secretName }}"
-{{- else if .Values.jxRequirements.ingress.tls.production }}
     secretName: "jx/tls-{{ .Values.jxRequirements.ingress.domain | replace "." "-" }}-p"
-{{- else }}
-    secretName: "jx/tls-{{ .Values.jxRequirements.ingress.domain | replace "." "-" }}-s"
-{{- end }}
 {{- end }}
 {{- end }}
