@@ -29,7 +29,7 @@ spec:
           resources: {}
           script: |
             #!/bin/sh
-            echo "breaking things on purpose"
+            echo "breaking things on purpose2"
             npm does-not-exist
             #npm install
         - name: build-npm-test
